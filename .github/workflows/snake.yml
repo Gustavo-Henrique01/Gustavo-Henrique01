@@ -1,0 +1,30 @@
+name: Generate Snake Animation
+
+on:
+  # Gera uma vez por dia
+  schedule:
+    - cron: "0 0 * * *" # A cada dia à meia-noite (UTC)
+  # Também roda quando houver push no branch main
+  push:
+    branches:
+      - main
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Gerar snake.svg
+        uses: Platane/snk@v3
+        with:
+          github_user_name: Gustavo-Henrique01
+          outputs: |
+            ./output/snake.svg
+
+      - name: Commit e Push do arquivo gerado
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "generated snake.svg"
+          add: "./output/snake.svg"
